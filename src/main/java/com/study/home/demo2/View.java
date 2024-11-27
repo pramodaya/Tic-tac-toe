@@ -12,6 +12,7 @@ public class View {
 
     private Button[][] buttons;
     private Label resultLabel;
+    private Label scoreLabel; // To display the score
     private Controller controller; // Reference to the Controller object
 
     public Scene createLayout() {
@@ -45,10 +46,15 @@ public class View {
         resultLabel.setFont(new Font("Arial", 20));
         gridPane.add(resultLabel, 0, ROWS + 1, COLS, 1);
 
+        // Create a Label to display the scores
+        scoreLabel = new Label("Score - X: 0 | O: 0");
+        scoreLabel.setFont(new Font("Arial", 16));
+        gridPane.add(scoreLabel, 0, ROWS + 2, COLS, 1);
+
         // Create a Controller object
         controller = new Controller(new Model(), this);
 
-        return new Scene(gridPane, 300, 300);
+        return new Scene(gridPane, 300, 400); // Increase height to accommodate new button
     }
 
     public void updateButton(int row, int col, char player) {
@@ -67,6 +73,10 @@ public class View {
         }
         resultLabel.setText(message);
 
+        // Update the score
+        controller.getModel().updateScore(winner);
+        updateScoreLabel();
+
         // Display the reset screen after the game ends
         new ResetScreen(this, controller.getModel()).show();
     }
@@ -74,6 +84,12 @@ public class View {
     public Label getResultLabel() {
         return resultLabel;
     }
+
+    public void updateScoreLabel() {
+        // Update the score display with the current score from the Model
+        scoreLabel.setText("Score - X: " + controller.getModel().getScoreX() + " | O: " + controller.getModel().getScoreO());
+    }
+
 
     public void disableAllButtons() {
         for (int i = 0; i < 3; i++) {

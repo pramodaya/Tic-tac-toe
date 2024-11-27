@@ -6,10 +6,16 @@ public class Model {
     private final char[][] board;
     public char currentPlayer;
 
+    // Variables to keep track of the score
+    private int scoreX;
+    private int scoreO;
+
     public Model() {
         board = new char[3][3];
         currentPlayer = 'X'; // Start with player X
         initializeBoard();
+        scoreX = 0;  // Player X starts with 0 score
+        scoreO = 0;  // Player O starts with 0 score
     }
 
     public void initializeBoard() {
@@ -44,12 +50,12 @@ public class Model {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 if (board[i][j] == '-') {
-                    return false;
+                    return false;  // The game is not over if there's an empty space
                 }
             }
         }
 
-        return true; // Game is over (either win or draw)
+        return true;  // Game is over (either win or draw)
     }
 
     private boolean checkRow(int row) {
@@ -73,17 +79,18 @@ public class Model {
             // Check rows, columns, and diagonals for winning combinations
             for (int i = 0; i < 3; i++) {
                 if (checkRow(i)) {
-                    return board[i][0];
+                    return board[i][0];  // Return the winner (X or O)
                 } else if (checkColumn(i)) {
-                    return board[0][i];
+                    return board[0][i];  // Return the winner (X or O)
                 } else if (checkDiagonal(i)) {
-                    return board[0][0]; // Assuming diagonal 0 is the winning diagonal
+                    return board[0][0];  // Return the winner (X or O) if the diagonal wins
                 }
             }
-            return '-'; // Draw if no winner
+            return '-';  // Return '-' for a draw if no winner
         }
-        return '-';
+        return '-';  // Return '-' if the game is not over
     }
+
 
     public char getCurrentPlayer() {
         return currentPlayer;
@@ -102,4 +109,27 @@ public class Model {
     public char[][] getBoard() {
         return board;
     }
+
+    // Methods to get and update the score
+    public int getScoreX() {
+        return scoreX;
+    }
+
+    public int getScoreO() {
+        return scoreO;
+    }
+
+    public void updateScore(char winner) {
+        if (winner == 'X') {
+            scoreX++;
+        } else if (winner == 'O') {
+            scoreO++;
+        }
+    }
+
+    public void resetScores() {
+        scoreX = 0;
+        scoreO = 0;
+    }
+
 }
